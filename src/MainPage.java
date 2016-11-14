@@ -69,7 +69,9 @@ public class MainPage extends JFrame  {
 		{
 			  public void actionPerformed(ActionEvent e)
 			  {
-				  
+				  JFrame SignUp =new SignUp();
+                  SignUp.setVisible(true);
+                  setVisible(false);
 			  }
 			});
 		
