@@ -4,11 +4,15 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.JTextField;
 
 
 public class UserHome extends JFrame {
 
 	private JPanel contentPane;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -34,8 +38,25 @@ public class UserHome extends JFrame {
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblCurrentuser = new JLabel("current_user");
+		lblCurrentuser.setBounds(168, 6, 61, 16);
+		contentPane.add(lblCurrentuser);
+		
+		JButton btnAddFriend = new JButton("Add Friend");
+		btnAddFriend.setBounds(34, 68, 117, 29);
+		contentPane.add(btnAddFriend);
+		
+		JLabel lblEmail = new JLabel("Email: ");
+		lblEmail.setBounds(168, 73, 61, 16);
+		contentPane.add(lblEmail);
+		
+		textField = new JTextField();
+		textField.setBounds(214, 67, 230, 28);
+		contentPane.add(textField);
+		textField.setColumns(10);
 	}
 
 }
