@@ -32,7 +32,7 @@ public class SignUp extends JFrame {
 	private JTextField password;
 	private JTextField confirmPassword;
 	private JTextField textFieldFullName;
-	private JTextField textField_4;
+	private JTextField phone, screenameField;
 	public List<User> users;
 
 	/**
@@ -83,9 +83,13 @@ public class SignUp extends JFrame {
 		lblFullName.setBounds(36, 186, 117, 16);
 		contentPane.add(lblFullName);
 		
-		JLabel lblScreenameoptional = new JLabel("Screename (optional)");
+		JLabel lblScreenameoptional = new JLabel("Screename ");
 		lblScreenameoptional.setBounds(36, 238, 134, 16);
 		contentPane.add(lblScreenameoptional);
+		
+		JLabel lblPhone = new JLabel("Phone Number");
+		lblPhone.setBounds(36, 275, 134, 16);
+		contentPane.add(lblPhone);
 		
 		email = new JTextField();
 		email.setBounds(210, 57, 213, 28);
@@ -107,13 +111,18 @@ public class SignUp extends JFrame {
 		textFieldFullName.setBounds(210, 180, 213, 28);
 		contentPane.add(textFieldFullName);
 		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(210, 232, 213, 28);
-		contentPane.add(textField_4);
+		screenameField = new JTextField();
+		screenameField.setColumns(10);
+		screenameField.setBounds(210, 232, 213, 28);
+		contentPane.add(screenameField);
 		
-		JCheckBox chckbxManager = new JCheckBox("Manager");
-		chckbxManager.setBounds(42, 286, 128, 23);
+		phone = new JTextField();
+		phone.setColumns(10);
+		phone.setBounds(210, 275, 213, 28);
+		contentPane.add(phone);
+		
+		final JCheckBox chckbxManager = new JCheckBox("Manager");
+		chckbxManager.setBounds(42, 310, 128, 23);
 		contentPane.add(chckbxManager);
 		
 		JButton btnSubmit = new JButton("Submit");
@@ -130,10 +139,11 @@ public class SignUp extends JFrame {
 							!email.getText().equals("") &&
 							!password.getText().equals("") &&
 							!textFieldFullName.getText().equals("")){
-						newUser = new User(email.getText(), textFieldFullName.getText(), password.getText(), "310" );
-						users.add(newUser);
-						System.out.println("password " + password.getText());
-						JFrame MainPage =new MainPage();
+						newUser = new User(email.getText(), textFieldFullName.getText(), password.getText(),screenameField.getText(), phone.getText(), chckbxManager.isSelected() );
+
+						OracleDatabase.addUserToDatabase(newUser);
+						System.out.println(newUser.email + password.getText());
+						JFrame MainPage =new LogInPage();
 		                MainPage.setVisible(true);
 		                setVisible(false);
 					}

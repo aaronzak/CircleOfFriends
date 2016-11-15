@@ -12,11 +12,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 
 
-public class MainPage extends JFrame  {
+public class LogInPage extends JFrame  {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JPasswordField passwordField;
+	private JTextField textField, passwordField;
 
 	/**
 	 * Launch the application.
@@ -25,7 +24,7 @@ public class MainPage extends JFrame  {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainPage frame = new MainPage();
+					LogInPage frame = new LogInPage();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -37,7 +36,7 @@ public class MainPage extends JFrame  {
 	/**
 	 * Create the frame.
 	 */
-	public MainPage() {
+	public LogInPage() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -54,7 +53,7 @@ public class MainPage extends JFrame  {
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
-		passwordField = new JPasswordField();
+		passwordField = new JTextField();
 		passwordField.setBounds(117, 123, 134, 28);
 		contentPane.add(passwordField);
 		
@@ -69,6 +68,8 @@ public class MainPage extends JFrame  {
 		{
 			  public void actionPerformed(ActionEvent e)
 			  {
+				  OracleDatabase.logInUser(textField.getText(), passwordField.getText());
+				  System.out.println(textField.getText());
 				  JFrame SignUp =new SignUp();
                   SignUp.setVisible(true);
                   setVisible(false);
@@ -78,6 +79,14 @@ public class MainPage extends JFrame  {
 		JButton btnLogIn = new JButton("Log In");
 		btnLogIn.setBounds(163, 181, 117, 29);
 		contentPane.add(btnLogIn);
+		btnLogIn.addActionListener(new ActionListener()
+		{
+			  public void actionPerformed(ActionEvent e)
+			  {
+				  OracleDatabase.logInUser(textField.getText(), passwordField.getText());
+				  
+			  }
+			});
 		
 		JLabel lblMyCircle = new JLabel("My Circle");
 		lblMyCircle.setFont(lblMyCircle.getFont().deriveFont(18.0f));

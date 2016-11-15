@@ -10,12 +10,13 @@ public class User {
 	
 	
 
-	public User(String email, String name, String password, String phone_num) {
+	public User(String email, String name, String password, String phone_num, String screename, Boolean manager) {
 		this.email = email;
 		this.name = name;
 		this.password = password;
 		this.phone_number = phone_num;
-		
+		this.screename = screename;
+		this.manager = manager;
 	}
 	
 	private void addFriend(User friend){
