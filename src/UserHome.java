@@ -12,7 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 
 
-public class UserHome extends LogInPage {
+public class UserHome extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField addFriendTextField;
@@ -42,13 +42,13 @@ public class UserHome extends LogInPage {
 	 */
 	public UserHome() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 600, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
 
 		String email = OracleDatabase.getSession();
+		contentPane.setLayout(null);
 		JLabel lblCurrentuser = new JLabel(email);
 		lblCurrentuser.setBounds(168, 6, 61, 16);
 		contentPane.add(lblCurrentuser);
@@ -73,6 +73,19 @@ public class UserHome extends LogInPage {
 		addFriendTextField.setBounds(214, 67, 230, 28);
 		contentPane.add(addFriendTextField);
 		addFriendTextField.setColumns(10);
+		
+		JButton btnMessage = new JButton("Message");
+		btnMessage.setBounds(34, 123, 117, 29);
+		contentPane.add(btnMessage);
+		
+		btnMessage.addActionListener(new ActionListener()
+		{
+			  public void actionPerformed(ActionEvent e)
+			  {
+				  JFrame Message =new PrivateMessage();
+                  Message.setVisible(true);
+			  }
+			});
 		
 		currentUser = OracleDatabase.getUserFromEmail(email);
 	}
