@@ -1,5 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import javax.swing.JFrame;
@@ -13,7 +15,7 @@ import javax.swing.JTextField;
 public class UserHome extends LogInPage {
 
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField addFriendTextField;
 	public User currentUser;
 
 	/**
@@ -54,15 +56,24 @@ public class UserHome extends LogInPage {
 		JButton btnAddFriend = new JButton("Add Friend");
 		btnAddFriend.setBounds(34, 68, 117, 29);
 		contentPane.add(btnAddFriend);
+		btnAddFriend.addActionListener(new ActionListener()
+		{
+			  public void actionPerformed(ActionEvent e)
+			  {
+				  
+				  OracleDatabase.addFriend(addFriendTextField.getText());
+			  }
+			});
 		
 		JLabel lblEmail = new JLabel("Email: ");
 		lblEmail.setBounds(168, 73, 61, 16);
 		contentPane.add(lblEmail);
 		
-		textField = new JTextField();
-		textField.setBounds(214, 67, 230, 28);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		addFriendTextField = new JTextField();
+		addFriendTextField.setBounds(214, 67, 230, 28);
+		contentPane.add(addFriendTextField);
+		addFriendTextField.setColumns(10);
+		
 		currentUser = OracleDatabase.getUserFromEmail(email);
 	}
 	

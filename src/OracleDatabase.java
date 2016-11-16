@@ -165,4 +165,9 @@ public class OracleDatabase {
 	
 	}
 
+	public static void addFriend(String text) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
