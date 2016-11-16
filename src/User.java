@@ -28,4 +28,9 @@ public class User {
 		return true;
 	}
 
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
+
 }

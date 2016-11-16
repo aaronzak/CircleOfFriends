@@ -111,15 +111,15 @@ public class SignUp extends JFrame {
 		textFieldFullName.setBounds(210, 180, 213, 28);
 		contentPane.add(textFieldFullName);
 		
-		screenameField = new JTextField();
-		screenameField.setColumns(10);
-		screenameField.setBounds(210, 232, 213, 28);
-		contentPane.add(screenameField);
-		
 		phone = new JTextField();
 		phone.setColumns(10);
-		phone.setBounds(210, 275, 213, 28);
+		phone.setBounds(210, 232, 213, 28);
 		contentPane.add(phone);
+		
+		screenameField = new JTextField();
+		screenameField.setColumns(10);
+		screenameField.setBounds(210, 275, 213, 28);
+		contentPane.add(screenameField);
 		
 		final JCheckBox chckbxManager = new JCheckBox("Manager");
 		chckbxManager.setBounds(42, 310, 128, 23);

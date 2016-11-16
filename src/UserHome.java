@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,14 +10,17 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 
 
-public class UserHome extends JFrame {
+public class UserHome extends LogInPage {
 
 	private JPanel contentPane;
 	private JTextField textField;
+	public User currentUser;
 
 	/**
 	 * Launch the application.
 	 */
+	
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -29,9 +33,10 @@ public class UserHome extends JFrame {
 			}
 		});
 	}
-
+	
 	/**
 	 * Create the frame.
+	 * @throws SQLException 
 	 */
 	public UserHome() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,8 +45,9 @@ public class UserHome extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		JLabel lblCurrentuser = new JLabel("current_user");
+
+		String email = OracleDatabase.getSession();
+		JLabel lblCurrentuser = new JLabel(email);
 		lblCurrentuser.setBounds(168, 6, 61, 16);
 		contentPane.add(lblCurrentuser);
 		
@@ -57,6 +63,9 @@ public class UserHome extends JFrame {
 		textField.setBounds(214, 67, 230, 28);
 		contentPane.add(textField);
 		textField.setColumns(10);
+		currentUser = OracleDatabase.getUserFromEmail(email);
 	}
+	
+	
 
 }

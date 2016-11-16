@@ -11,11 +11,18 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class LogInPage extends JFrame  {
 
 	private JPanel contentPane;
 	private JTextField textField, passwordField;
+	public User currentUser;
 
 	/**
 	 * Launch the application.
@@ -68,8 +75,7 @@ public class LogInPage extends JFrame  {
 		{
 			  public void actionPerformed(ActionEvent e)
 			  {
-				  OracleDatabase.logInUser(textField.getText(), passwordField.getText());
-				  System.out.println(textField.getText());
+				  
 				  JFrame SignUp =new SignUp();
                   SignUp.setVisible(true);
                   setVisible(false);
@@ -83,7 +89,14 @@ public class LogInPage extends JFrame  {
 		{
 			  public void actionPerformed(ActionEvent e)
 			  {
-				  OracleDatabase.logInUser(textField.getText(), passwordField.getText());
+				  User user = OracleDatabase.logInUser(textField.getText(), passwordField.getText());
+				  if(user!= null){
+					  
+
+					  UserHome Home =new UserHome();
+	                  Home.setVisible(true);
+	                  setVisible(false);
+				  }
 				  
 			  }
 			});
