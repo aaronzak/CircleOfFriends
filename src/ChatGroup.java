@@ -1,5 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,7 +14,8 @@ import javax.swing.JTextField;
 public class ChatGroup extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtChatgroupname;
+	private JTextField txtChatgroupname, txtChatgroupDuration;
+	private User currentUser;
 
 	/**
 	 * Launch the application.
@@ -34,7 +37,12 @@ public class ChatGroup extends JFrame {
 	 * Create the frame.
 	 */
 	public ChatGroup() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+
+		String cEmail = OracleDatabase.getSession();
+		currentUser = OracleDatabase.getUserFromEmail(cEmail);
+		
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 600, 1000);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -55,13 +63,28 @@ public class ChatGroup extends JFrame {
 		
 		txtChatgroupname = new JTextField();
 		txtChatgroupname.setText("chatgroup_name");
-		txtChatgroupname.setBounds(231, 572, 276, 28);
+		txtChatgroupname.setBounds(255, 673, 276, 28);
 		contentPane.add(txtChatgroupname);
 		txtChatgroupname.setColumns(10);
+		
+		txtChatgroupDuration = new JTextField();
+		txtChatgroupDuration.setText("dur");
+		txtChatgroupDuration.setBounds(215, 673, 40, 28);
+		contentPane.add(txtChatgroupDuration);
+		txtChatgroupDuration.setColumns(10);
 		
 		JButton btnCreateChatgroup = new JButton("Create Chatgroup");
 		btnCreateChatgroup.setBounds(6, 673, 173, 29);
 		contentPane.add(btnCreateChatgroup);
+		btnCreateChatgroup.addActionListener(new ActionListener()
+		{
+			  public void actionPerformed(ActionEvent e)
+			  {
+				  OracleDatabase.createChatgroup(currentUser, txtChatgroupname.getText(),
+						  Integer.parseInt(txtChatgroupDuration.getText()));
+			  }
+			});
+		
 	}
 
 }

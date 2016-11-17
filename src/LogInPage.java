@@ -105,6 +105,9 @@ public class LogInPage extends JFrame  {
 		lblMyCircle.setFont(lblMyCircle.getFont().deriveFont(18.0f));
 		lblMyCircle.setBounds(117, 6, 105, 44);
 		contentPane.add(lblMyCircle);
+		
+
+		
 	}
 
 

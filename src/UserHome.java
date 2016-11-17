@@ -113,6 +113,19 @@ public class UserHome extends JFrame {
 			  }
 			});
 		
+		JButton btnGroupChat = new JButton("Group Chats");
+		btnGroupChat.setBounds(34, 230, 117, 29);
+		contentPane.add(btnGroupChat);
+		btnGroupChat.addActionListener(new ActionListener()
+		{
+			  public void actionPerformed(ActionEvent e)
+			  {
+				  JFrame ChatGroup =new ChatGroup();
+				  ChatGroup.setVisible(true);
+				  
+			  }
+			});
+		
 		currentUser = OracleDatabase.getUserFromEmail(email);
 	}
 	

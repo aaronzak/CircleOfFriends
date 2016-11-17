@@ -343,8 +343,20 @@ public class OracleDatabase {
 	public static void addTopic(String user, String topic){
 		String sql = "INSERT INTO Topic " 
         		+ "VALUES (topic_seq.nextval, '" + topic +"', '" + user + "')";
-        System.out.println(sql);
+        
 		makeQuery(sql);
 	}
 
+	public static void createChatgroup(User user, String name, int duration){
+		String sql = "INSERT INTO Chatgroup " 
+        		+ "VALUES ('" + name + "'," + duration+ ", '" + user.email + "')";
+		System.out.println(sql);
+		makeQuery(sql);
+	}
+	
+	public static void inviteToChatgroup(User currentUser, String invited, String name){
+		String sql = "Insert Into InviteChatgroup values ('"+
+					currentUser.email + "', '" + invited + "', '" + name + "')";
+		makeQuery(sql);
+	}
 }
