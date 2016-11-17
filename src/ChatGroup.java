@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JList;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.JTextArea;
 
 
 public class ChatGroup extends JFrame {
@@ -58,7 +59,7 @@ public class ChatGroup extends JFrame {
 		contentPane.add(lblCurrentChat);
 		
 		JList list = new JList();
-		list.setBounds(6, 148, 588, 312);
+		list.setBounds(6, 148, 588, 195);
 		contentPane.add(list);
 		
 		JButton btnViewInvitations = new JButton("View Invitations");
@@ -148,6 +149,22 @@ public class ChatGroup extends JFrame {
 		JButton btnAcceptChatgroup = new JButton("Accept Invite");
 		btnAcceptChatgroup.setBounds(6, 773, 173, 29);
 		contentPane.add(btnAcceptChatgroup);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setBounds(6, 366, 588, 86);
+		contentPane.add(textArea);
+		
+		JButton btnSend = new JButton("Send");
+		btnSend.setBounds(477, 480, 117, 29);
+		contentPane.add(btnSend);
+		btnSend.addActionListener(new ActionListener()
+		{
+			  public void actionPerformed(ActionEvent e)
+			  {
+			  }
+			});
+		
+		
 		btnAcceptChatgroup.addActionListener(new ActionListener()
 		{
 			  public void actionPerformed(ActionEvent e)
@@ -155,6 +172,7 @@ public class ChatGroup extends JFrame {
 				  OracleDatabase.acceptChatgroup(currentUser.email, txtChatgroupAccept.getText());
 			  }
 			});
+		
 		
 		
 	}
