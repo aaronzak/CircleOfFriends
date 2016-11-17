@@ -247,10 +247,10 @@ public class OracleDatabase {
             String sql = "INSERT INTO PrivateMessages (m_id, time, text, owner, recipient)" 
 		+ "VALUES (message_seq.nextval, CURRENT_TIMESTAMP, '" + text +"', '" + cUser.email + "', '" + recipient + "')" ;
 
-            System.out.println(sql);
             makeQuery(sql);
              sql = "INSERT INTO PrivateMessages (m_id, time, text, owner, recipient)" 
             		+ "VALUES (message_seq.nextval, CURRENT_TIMESTAMP, '" + text +"', '" + recipient + "', '" + cUser.email + "')" ;
+             makeQuery(sql);
 
 		}
 	}
@@ -349,14 +349,138 @@ public class OracleDatabase {
 
 	public static void createChatgroup(User user, String name, int duration){
 		String sql = "INSERT INTO Chatgroup " 
-        		+ "VALUES ('" + name + "'," + duration+ ", '" + user.email + "')";
+        		+ "VALUES ('" + name + "'," + duration+ ", '" + user.email + "' , CURRENT_TIMESTAMP)";
 		System.out.println(sql);
+		makeQuery(sql);
+		
+		sql = "Insert Into InviteChatgroup values (1, '" + user.email + "', '" + name + "')";
 		makeQuery(sql);
 	}
 	
 	public static void inviteToChatgroup(User currentUser, String invited, String name){
-		String sql = "Insert Into InviteChatgroup values ('"+
-					currentUser.email + "', '" + invited + "', '" + name + "')";
+		if(!checkUserInChatgroup(currentUser.email, name)) return;
+		
+		String sql = "Insert Into InviteChatgroup values (0, '" + invited + "', '" + name + "')";
+		makeQuery(sql);
+	}
+	
+	public static void viewChatgroupInvites(String user){
+		try{
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+            String username = "azakhor";
+            String password = "125";
+            Connection con=DriverManager.getConnection(url,username, password);
+            Statement st = con.createStatement();
+            String sql = "Select name from InviteChatgroup where invited = '" + user +
+            		"' and accepted = 0";
+            System.out.println(sql);
+            ResultSet rs = st.executeQuery(sql);
+                       
+            while(rs.next())
+				System.out.println(rs.getString(1));
+									
+				
+            con.close();
+            
+            
+		}catch(
+
+	Exception e)
+	{System.out.println(e);}
+	}
+	public static void viewChatgroups(String user){
+		try{
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+            String username = "azakhor";
+            String password = "125";
+            Connection con=DriverManager.getConnection(url,username, password);
+            Statement st = con.createStatement();
+            String sql = "Select name from InviteChatgroup where invited = '" + user +
+            		"' and accepted = 1";
+            System.out.println(sql);
+            ResultSet rs = st.executeQuery(sql);
+                       
+            while(rs.next())
+				System.out.println(rs.getString(1));
+									
+				
+            con.close();
+            
+            
+		}catch(
+
+	Exception e)
+	{System.out.println(e);}
+	}
+	
+	
+	
+	
+	public static void viewConversations(String currentUser){
+		try{
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+            String username = "azakhor";
+            String password = "125";
+            Connection con=DriverManager.getConnection(url,username, password);
+            Statement st = con.createStatement();
+            String sql = "Select owner from PrivateMessages where recipient = '" + currentUser +
+            		"' group by owner";
+            System.out.println(sql);
+            ResultSet rs = st.executeQuery(sql);
+                       
+            while(rs.next())
+				System.out.println(rs.getString(1));
+									
+				
+            con.close();
+            
+            
+		}catch(
+
+	Exception e)
+	{System.out.println(e);}
+	}
+	
+	public static boolean checkUserInChatgroup(String user, String name){
+		try{
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+            String username = "azakhor";
+            String password = "125";
+            Connection con=DriverManager.getConnection(url,username, password);
+            Statement st = con.createStatement();
+            String sql = "Select accepted from InviteChatgroup where invited = '" + user +
+            		"' and name = '" + name + "'";
+            System.out.println(sql);
+            ResultSet rs = st.executeQuery(sql);
+                       
+            while(rs.next())
+            	if(rs.getInt(1) == 1) return true;
+            	else return false;
+				
+				
+            con.close();
+            
+            
+		}catch(
+
+	Exception e)
+	{System.out.println(e);}
+		return false;
+		
+		
+	}
+	
+	public static void acceptChatgroup(String user, String name)
+	{
+		String sql = "Update InviteChatgroup set accepted = 1 WHERE invited ='" + user +"' and name = '" + name+ "'";
 		makeQuery(sql);
 	}
 }

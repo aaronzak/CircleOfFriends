@@ -93,6 +93,7 @@ public class UserHome extends JFrame {
 		{
 			  public void actionPerformed(ActionEvent e)
 			  {
+				  OracleDatabase.viewConversations(currentUser.email);
 				  JFrame Message =new PrivateMessage();
                   Message.setVisible(true);
 			  }
@@ -120,6 +121,7 @@ public class UserHome extends JFrame {
 		{
 			  public void actionPerformed(ActionEvent e)
 			  {
+				  OracleDatabase.viewChatgroups(currentUser.email);
 				  JFrame ChatGroup =new ChatGroup();
 				  ChatGroup.setVisible(true);
 				  
