@@ -245,12 +245,12 @@ public class OracleDatabase {
 	public static void sendPM(User cUser, String recipient, String text){
 		if(checkFriend(cUser,recipient)){
             String sql = "INSERT INTO PrivateMessages (m_id, time, text, owner, recipient)" 
-		+ "VALUES ("+ m_id++ + ", CURRENT_TIMESTAMP, '" + text +"', '" + cUser.email + "', '" + recipient + "')" ;
+		+ "VALUES (message_seq.nextval, CURRENT_TIMESTAMP, '" + text +"', '" + cUser.email + "', '" + recipient + "')" ;
 
             System.out.println(sql);
             makeQuery(sql);
              sql = "INSERT INTO PrivateMessages (m_id, time, text, owner, recipient)" 
-            		+ "VALUES ("+ m_id++ + ", CURRENT_TIMESTAMP, '" + text +"', '" + recipient + "', '" + cUser.email + "')" ;
+            		+ "VALUES (message_seq.nextval, CURRENT_TIMESTAMP, '" + text +"', '" + recipient + "', '" + cUser.email + "')" ;
 
 		}
 	}
@@ -342,7 +342,7 @@ public class OracleDatabase {
 	
 	public static void addTopic(String user, String topic){
 		String sql = "INSERT INTO Topic " 
-        		+ "VALUES ("+ topic_id++ + ", '" + topic +"', '" + user + "')";
+        		+ "VALUES (topic_seq.nextval, '" + topic +"', '" + user + "')";
         System.out.println(sql);
 		makeQuery(sql);
 	}
