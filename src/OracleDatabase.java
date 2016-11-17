@@ -230,7 +230,7 @@ public class OracleDatabase {
 			makeQuery(sql);
 			System.out.println("you have just accepted " + email);
 		}else{
-            String sql = "INSERT INTO InviteFriend " + "VALUES ('" + cUser.email + "', '" + email + "', 0)" ;//+ " INSERT INTO InviteFriend " + "VALUES ('" + email + "', '" + cUser.email + "', 0)" ;
+            String sql = "INSERT INTO InviteFriend " + "VALUES ('" + cUser.email + "', '" + email + "', 0)" ;
 			System.out.println(sql);
 			
 			makeQuery(sql);
@@ -359,6 +359,7 @@ public class OracleDatabase {
 	
 	public static void inviteToChatgroup(User currentUser, String invited, String name){
 		if(!checkUserInChatgroup(currentUser.email, name)) return;
+		if(!checkFriend(currentUser, invited)) return;
 		
 		String sql = "Insert Into InviteChatgroup values (0, '" + invited + "', '" + name + "')";
 		makeQuery(sql);
@@ -483,4 +484,94 @@ public class OracleDatabase {
 		String sql = "Update InviteChatgroup set accepted = 1 WHERE invited ='" + user +"' and name = '" + name+ "'";
 		makeQuery(sql);
 	}
+	
+	public static void sendChat(String user, String name, String text){
+		String sql = "Insert Into ChatgroupMessages Values (chat_message_seq.nextval,CURRENT_TIMESTAMP, '" +
+				 text +"', '" + user + "', '" + name + "')" ;
+		makeQuery(sql);
+	}
+
+	public static void viewChatgroupConversations(String currentChatgroup) {
+		System.out.println("Messages in " + currentChatgroup);
+		try{
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+            String username = "azakhor";
+            String password = "125";
+            Connection con=DriverManager.getConnection(url,username, password);
+            Statement st = con.createStatement();
+            String sql = "Select * from ChatgroupMessages where name = '" + currentChatgroup +
+            		"' order by cm_id desc";
+            System.out.println(sql);
+            ResultSet rs = st.executeQuery(sql);
+                       
+            while(rs.next())
+            	System.out.println(rs.getInt("cm_id") + " " + rs.getTimestamp("time") + " " + rs.getString("owner") + ": " + rs.getString("text"));
+				
+				
+            con.close();
+            
+            
+		}catch(
+
+	Exception e)
+	{System.out.println(e);}
+		
+	}
+	
+	
+
+	public static void editChatgroup(String email, String name, String newname, String duration) {
+		boolean canEdit = false;
+		try{
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+            String username = "azakhor";
+            String password = "125";
+            Connection con=DriverManager.getConnection(url,username, password);
+            Statement st = con.createStatement();
+            String sql = "Select owner from Chatgroup where name = '" + name +
+            		"'";
+            System.out.println(sql);
+            ResultSet rs = st.executeQuery(sql);
+                       
+            while(rs.next())
+				if(rs.getString("owner").equals(email)){
+					canEdit = true;
+				}
+				else{
+					System.out.println("Cannot edit this Chatgroup!");
+				}
+				
+            con.close();
+            
+            
+		}catch(
+
+	Exception e)
+	{System.out.println(e);}
+		if(canEdit){
+			
+			
+			String sql2 = "update Chatgroup set duration = " +
+					Integer.parseInt(duration)+ " where name = '"+ name + "'";
+			makeQuery(sql2);
+//			System.out.println(sql2);
+//			sql2 = "update InviteChatgroup set name = '" + newname + "' where name = '"+ name + "'";
+//			makeQuery(sql2);
+//			sql2 = "update ChatgroupMessages set name = '" + newname + "'  where name = '"+ name + "'";
+//			makeQuery(sql2);
+		}
+		
+	}
+
+	public static void deleteMessage(String email, String currentChatgroup, int parseInt) {
+		String sql = "delete from ChatgroupMessages where owner = '" + email + "'and name = '" + currentChatgroup + "'and cm_id = " + parseInt;
+		makeQuery(sql);
+		
+	}
+	
+
 }

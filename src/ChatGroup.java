@@ -17,7 +17,8 @@ public class ChatGroup extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtChatgroupname, txtChatgroupDuration,txtChatgroupInvite,
-	txtChatgroupAccept, txtOpenChatgroupname;
+	txtChatgroupAccept, txtOpenChatgroupname, txtEditName, txtEditDuration, txtDelete;
+	private JTextArea textArea;
 	private User currentUser;
 
 	private String currentChatgroup;
@@ -55,12 +56,30 @@ public class ChatGroup extends JFrame {
 		contentPane.setLayout(null);
 		
 		final JLabel lblCurrentChat = new JLabel("");
-		lblCurrentChat.setBounds(168, 6, 61, 16);
+		lblCurrentChat.setBounds(168, 6, 161, 16);
 		contentPane.add(lblCurrentChat);
 		
 		JList list = new JList();
 		list.setBounds(6, 148, 588, 195);
 		contentPane.add(list);
+		
+		JButton btnDeleteMessage = new JButton("Delete Message");
+		btnDeleteMessage.setBounds(6, 522, 173, 29);
+		contentPane.add(btnDeleteMessage);
+		btnDeleteMessage.addActionListener(new ActionListener()
+		{
+			  public void actionPerformed(ActionEvent e)
+			  {
+				 OracleDatabase.deleteMessage(currentUser.email, currentChatgroup, Integer.parseInt(txtDelete.getText()));
+			  }
+			});
+		
+		txtDelete = new JTextField();
+		txtDelete.setText("");
+		txtDelete.setBounds(215, 522, 40, 28);
+		contentPane.add(txtDelete);
+		txtDelete.setColumns(10);
+		
 		
 		JButton btnViewInvitations = new JButton("View Invitations");
 		btnViewInvitations.setBounds(6, 628, 173, 29);
@@ -76,6 +95,7 @@ public class ChatGroup extends JFrame {
 				 if(OracleDatabase.checkUserInChatgroup(currentUser.email, txtOpenChatgroupname.getText())){
 					 currentChatgroup = txtOpenChatgroupname.getText();
 					 lblCurrentChat.setText(currentChatgroup);
+					 OracleDatabase.viewChatgroupConversations(currentChatgroup);
 				 }
 			  }
 			});
@@ -150,7 +170,7 @@ public class ChatGroup extends JFrame {
 		btnAcceptChatgroup.setBounds(6, 773, 173, 29);
 		contentPane.add(btnAcceptChatgroup);
 		
-		JTextArea textArea = new JTextArea();
+		 textArea = new JTextArea();
 		textArea.setBounds(6, 366, 588, 86);
 		contentPane.add(textArea);
 		
@@ -161,6 +181,12 @@ public class ChatGroup extends JFrame {
 		{
 			  public void actionPerformed(ActionEvent e)
 			  {
+				  if(currentChatgroup != null){
+				  OracleDatabase.sendChat(currentUser.email, currentChatgroup, textArea.getText());
+				  }
+				  else{
+					  System.out.println("First open chatgroup");
+				  }
 			  }
 			});
 		
@@ -172,7 +198,29 @@ public class ChatGroup extends JFrame {
 				  OracleDatabase.acceptChatgroup(currentUser.email, txtChatgroupAccept.getText());
 			  }
 			});
+		JButton btnEditChatgroup = new JButton("Edit");
+		btnEditChatgroup.setBounds(6, 823, 173, 29);
+		contentPane.add(btnEditChatgroup);
 		
+		txtEditName = new JTextField();
+		txtEditName.setText("");
+		txtEditName.setBounds(255, 823, 276, 28);
+		contentPane.add(txtEditName);
+		txtEditName.setColumns(10);
+		
+		txtEditDuration = new JTextField();
+		txtEditDuration.setText("7");
+		txtEditDuration.setBounds(215, 823, 40, 28);
+		contentPane.add(txtEditDuration);
+		txtEditDuration.setColumns(10);
+		
+		btnEditChatgroup.addActionListener(new ActionListener()
+		{
+			  public void actionPerformed(ActionEvent e)
+			  {
+				  OracleDatabase.editChatgroup(currentUser.email, currentChatgroup, txtEditName.getText(), txtEditDuration.getText());
+			  }
+			});
 		
 		
 	}
