@@ -86,7 +86,7 @@ public class UserHome extends JFrame {
 		addFriendTextField.setColumns(10);
 		
 		JButton btnMessage = new JButton("Message");
-		btnMessage.setBounds(34, 123, 117, 29);
+		btnMessage.setBounds(34, 123, 143, 29);
 		contentPane.add(btnMessage);
 		
 		btnMessage.addActionListener(new ActionListener()
@@ -104,7 +104,7 @@ public class UserHome extends JFrame {
 		topicTextField.setColumns(10);
 		
 		JButton btnAddTopic = new JButton("Add Topic");
-		btnAddTopic.setBounds(34, 183, 117, 29);
+		btnAddTopic.setBounds(34, 183, 143, 29);
 		contentPane.add(btnAddTopic);
 		btnAddTopic.addActionListener(new ActionListener()
 		{
@@ -115,8 +115,16 @@ public class UserHome extends JFrame {
 			});
 		
 		JButton btnGroupChat = new JButton("Group Chats");
-		btnGroupChat.setBounds(34, 230, 117, 29);
+		btnGroupChat.setBounds(34, 230, 143, 29);
 		contentPane.add(btnGroupChat);
+		
+		JButton btnCircle = new JButton("Circle");
+		btnCircle.setBounds(34, 271, 143, 29);
+		contentPane.add(btnCircle);
+		
+		JButton btnViewFriends = new JButton("View Friends");
+		btnViewFriends.setBounds(34, 325, 143, 29);
+		contentPane.add(btnViewFriends);
 		btnGroupChat.addActionListener(new ActionListener()
 		{
 			  public void actionPerformed(ActionEvent e)
