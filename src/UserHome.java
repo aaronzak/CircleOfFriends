@@ -15,7 +15,7 @@ import javax.swing.JTextField;
 public class UserHome extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField addFriendTextField;
+	private JTextField addFriendTextField, topicTextField;
 	public User currentUser;
 
 	/**
@@ -61,10 +61,21 @@ public class UserHome extends JFrame {
 			  public void actionPerformed(ActionEvent e)
 			  {
 				  
-				  OracleDatabase.addFriend(addFriendTextField.getText());
+				  OracleDatabase.addFriend(currentUser,addFriendTextField.getText());
 			  }
 			});
 		
+		JButton btnCheckRequests = new JButton("Friend Requests");
+		btnCheckRequests.setBounds(460, 68, 127, 29);
+		contentPane.add(btnCheckRequests);
+		btnCheckRequests.addActionListener(new ActionListener()
+		{
+			  public void actionPerformed(ActionEvent e)
+			  {
+				  
+				  OracleDatabase.checkRequests(currentUser);
+			  }
+			});
 		JLabel lblEmail = new JLabel("Email: ");
 		lblEmail.setBounds(168, 73, 61, 16);
 		contentPane.add(lblEmail);
@@ -84,6 +95,21 @@ public class UserHome extends JFrame {
 			  {
 				  JFrame Message =new PrivateMessage();
                   Message.setVisible(true);
+			  }
+			});
+		topicTextField = new JTextField();
+		topicTextField.setBounds(214, 183, 230, 28);
+		contentPane.add(topicTextField);
+		topicTextField.setColumns(10);
+		
+		JButton btnAddTopic = new JButton("Add Topic");
+		btnAddTopic.setBounds(34, 183, 117, 29);
+		contentPane.add(btnAddTopic);
+		btnAddTopic.addActionListener(new ActionListener()
+		{
+			  public void actionPerformed(ActionEvent e)
+			  {
+				 OracleDatabase.addTopic( currentUser.email, topicTextField.getText());
 			  }
 			});
 		
