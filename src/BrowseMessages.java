@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 
 public class BrowseMessages extends JFrame {
@@ -19,6 +20,16 @@ public class BrowseMessages extends JFrame {
 	private JTextField textField;
 	private JTextArea txtrTopics;
 	private JCheckBox chckbxIncludeAll;
+	private JLabel lblUsers;
+	private JTextField emailSearch;
+	private JTextField txtTopicsearc;
+	private JTextField textField_1;
+	private JTextField txtTotal;
+	private JLabel lblRecentMessage;
+	private JLabel lblTotalMessages;
+	private JButton btnSearchusers;
+	private JLabel lblEmail;
+	private JLabel lblTopics;
 	
 	/**
 	 * Launch the application.
@@ -41,7 +52,7 @@ public class BrowseMessages extends JFrame {
 	 */
 	public BrowseMessages() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 800);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -65,6 +76,54 @@ public class BrowseMessages extends JFrame {
 		JButton btnSearch = new JButton("Search");
 		btnSearch.setBounds(327, 222, 117, 29);
 		contentPane.add(btnSearch);
+		
+		lblUsers = new JLabel("Users");
+		lblUsers.setBounds(163, 263, 84, 16);
+		contentPane.add(lblUsers);
+		
+		emailSearch = new JTextField();
+		emailSearch.setBounds(6, 298, 438, 28);
+		contentPane.add(emailSearch);
+		emailSearch.setColumns(10);
+		
+		txtTopicsearc = new JTextField();
+		txtTopicsearc.setText("");
+		txtTopicsearc.setBounds(6, 344, 438, 28);
+		contentPane.add(txtTopicsearc);
+		txtTopicsearc.setColumns(10);
+		
+		textField_1 = new JTextField();
+		textField_1.setText("7");
+		textField_1.setBounds(6, 389, 134, 28);
+		contentPane.add(textField_1);
+		textField_1.setColumns(10);
+		
+		txtTotal = new JTextField();
+		txtTotal.setText("");
+		txtTotal.setBounds(211, 389, 134, 28);
+		contentPane.add(txtTotal);
+		txtTotal.setColumns(10);
+		
+		lblRecentMessage = new JLabel("Recent Message");
+		lblRecentMessage.setBounds(6, 429, 134, 16);
+		contentPane.add(lblRecentMessage);
+		
+		lblTotalMessages = new JLabel("Total messages");
+		lblTotalMessages.setBounds(211, 429, 134, 16);
+		contentPane.add(lblTotalMessages);
+		
+		btnSearchusers = new JButton("Search Users");
+		btnSearchusers.setBounds(294, 493, 150, 29);
+		contentPane.add(btnSearchusers);
+		
+		lblEmail = new JLabel("email");
+		lblEmail.setBounds(6, 281, 61, 16);
+		contentPane.add(lblEmail);
+		
+		lblTopics = new JLabel("topics");
+		lblTopics.setBounds(6, 325, 61, 16);
+		contentPane.add(lblTopics);
+		
 		btnSearch.addActionListener(new ActionListener()
 		{
 			
