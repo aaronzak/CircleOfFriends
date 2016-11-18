@@ -121,10 +121,30 @@ public class UserHome extends JFrame {
 		JButton btnCircle = new JButton("Circle");
 		btnCircle.setBounds(34, 271, 143, 29);
 		contentPane.add(btnCircle);
+		btnCircle.addActionListener(new ActionListener()
+		{
+			  public void actionPerformed(ActionEvent e)
+			  {
+				  
+				  JFrame Circle =new Circle();
+                  Circle.setVisible(true);
+				  
+			  }
+			});
 		
 		JButton btnViewFriends = new JButton("View Friends");
 		btnViewFriends.setBounds(34, 325, 143, 29);
 		contentPane.add(btnViewFriends);
+		btnViewFriends.addActionListener(new ActionListener()
+		{
+			  public void actionPerformed(ActionEvent e)
+			  {
+				  OracleDatabase.viewFriends(currentUser.email);
+				  
+				  
+			  }
+			});
+		
 		btnGroupChat.addActionListener(new ActionListener()
 		{
 			  public void actionPerformed(ActionEvent e)

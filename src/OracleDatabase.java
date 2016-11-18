@@ -27,7 +27,6 @@ public class OracleDatabase {
             Connection con=DriverManager.getConnection(url,username, password);
             Statement st = con.createStatement();
             String sql = "Select * From Users Where email = '" + email + "'";
-            System.out.println(sql);
             ResultSet rs = st.executeQuery(sql);
             //ResultSet rs1 = st.executeQuery(sql1);
 //            if(rs==null){
@@ -143,7 +142,6 @@ public class OracleDatabase {
             Connection con=DriverManager.getConnection(url,username, password);
             Statement st = con.createStatement();
             String sql = "Select * From Users Where email = '" + email + "'";
-            System.out.println(sql);
             ResultSet rs = st.executeQuery(sql);
  
             while(rs.next())
@@ -178,7 +176,6 @@ public class OracleDatabase {
             Connection con=DriverManager.getConnection(url,username, password);
             Statement st = con.createStatement();
             String sql = "Select * from InviteFriend where email2 = '" + cUser.email +"' and is_friend = '0'";
-            System.out.println(sql);
             ResultSet rs = st.executeQuery(sql);
                        
             while(rs.next())
@@ -204,7 +201,6 @@ public class OracleDatabase {
             Connection con=DriverManager.getConnection(url,username, password);
             Statement st = con.createStatement();
             String sql = "Select * from InviteFriend where email1 = '" + email +"' and email2 = '" + cUser.email+ "'";
-            System.out.println(sql);
             ResultSet rs = st.executeQuery(sql);
                        
             while(rs.next())
@@ -225,13 +221,11 @@ public class OracleDatabase {
 	{System.out.println(e);}
 		if(makeFriend){
 			String sql = "Update InviteFriend set is_friend = 1 WHERE email1 ='" + email +"' and email2 = '" + cUser.email+ "'";
-			System.out.println(sql);
 			
 			makeQuery(sql);
 			System.out.println("you have just accepted " + email);
 		}else{
             String sql = "INSERT INTO InviteFriend " + "VALUES ('" + cUser.email + "', '" + email + "', 0)" ;
-			System.out.println(sql);
 			
 			makeQuery(sql);
 			System.out.println("you have just requested " + email);
@@ -255,6 +249,56 @@ public class OracleDatabase {
 		}
 	}
 	
+	public static void viewFriends(String user){
+		System.out.println("My friends: ");
+		try{
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+            String username = "azakhor";
+            String password = "125";
+            Connection con=DriverManager.getConnection(url,username, password);
+            Statement st = con.createStatement();
+            String sql = "Select * from InviteFriend where email1 = '" + user +"'";
+            ResultSet rs = st.executeQuery(sql);
+            
+                       
+            while(rs.next())
+            	if(rs.getString("is_friend").equals("1")){
+                	System.out.println(rs.getString("email2"));
+                }
+            con.close();
+            
+            
+		}catch(
+
+	Exception e)
+	{System.out.println(e);}
+		try{
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+            String username = "azakhor";
+            String password = "125";
+            Connection con=DriverManager.getConnection(url,username, password);
+            Statement st = con.createStatement();
+            String sql = "Select * from InviteFriend where email2 = '" + user +"'";
+            ResultSet rs = st.executeQuery(sql);
+            
+                       
+            while(rs.next())
+            	if(rs.getString("is_friend").equals("1")){
+                	System.out.println(rs.getString("email1"));
+                }
+            con.close();
+            
+            
+		}catch(
+
+	Exception e)
+	{System.out.println(e);}
+		
+	}
 	public static void viewMessages(String currentUser, String recipient){
 		try{
 
@@ -265,7 +309,6 @@ public class OracleDatabase {
             Connection con=DriverManager.getConnection(url,username, password);
             Statement st = con.createStatement();
             String sql = "Select * from PrivateMessages where owner = '" + currentUser +"' and recipient = '" + recipient+ "'";
-            System.out.println(sql);
             ResultSet rs = st.executeQuery(sql);
                        
             while(rs.next())
@@ -296,7 +339,6 @@ public class OracleDatabase {
             Connection con=DriverManager.getConnection(url,username, password);
             Statement st = con.createStatement();
             String sql = "Select * from InviteFriend where email1 = '" + email +"' and email2 = '" + cUser.email+ "'";
-            System.out.println(sql);
             ResultSet rs = st.executeQuery(sql);
                        
             while(rs.next())
@@ -320,7 +362,6 @@ public class OracleDatabase {
             Connection con=DriverManager.getConnection(url,username, password);
             Statement st = con.createStatement();
             String sql = "Select * from InviteFriend where email1 = '" + cUser.email +"' and email2 = '" + email + "'";
-            System.out.println(sql);
             ResultSet rs = st.executeQuery(sql);
                        
             while(rs.next())
@@ -350,7 +391,6 @@ public class OracleDatabase {
 	public static void createChatgroup(User user, String name, int duration){
 		String sql = "INSERT INTO Chatgroup " 
         		+ "VALUES ('" + name + "'," + duration+ ", '" + user.email + "' , CURRENT_TIMESTAMP)";
-		System.out.println(sql);
 		makeQuery(sql);
 		
 		sql = "Insert Into InviteChatgroup values (1, '" + user.email + "', '" + name + "')";
@@ -376,7 +416,6 @@ public class OracleDatabase {
             Statement st = con.createStatement();
             String sql = "Select name from InviteChatgroup where invited = '" + user +
             		"' and accepted = 0";
-            System.out.println(sql);
             ResultSet rs = st.executeQuery(sql);
                        
             while(rs.next())
@@ -402,7 +441,6 @@ public class OracleDatabase {
             Statement st = con.createStatement();
             String sql = "Select name from InviteChatgroup where invited = '" + user +
             		"' and accepted = 1";
-            System.out.println(sql);
             ResultSet rs = st.executeQuery(sql);
                        
             while(rs.next())
@@ -432,7 +470,6 @@ public class OracleDatabase {
             Statement st = con.createStatement();
             String sql = "Select owner from PrivateMessages where recipient = '" + currentUser +
             		"' group by owner";
-            System.out.println(sql);
             ResultSet rs = st.executeQuery(sql);
                        
             while(rs.next())
@@ -459,7 +496,6 @@ public class OracleDatabase {
             Statement st = con.createStatement();
             String sql = "Select accepted from InviteChatgroup where invited = '" + user +
             		"' and name = '" + name + "'";
-            System.out.println(sql);
             ResultSet rs = st.executeQuery(sql);
                        
             while(rs.next())
@@ -503,7 +539,6 @@ public class OracleDatabase {
             Statement st = con.createStatement();
             String sql = "Select * from ChatgroupMessages where name = '" + currentChatgroup +
             		"' order by cm_id desc";
-            System.out.println(sql);
             ResultSet rs = st.executeQuery(sql);
                        
             while(rs.next())
@@ -534,7 +569,6 @@ public class OracleDatabase {
             Statement st = con.createStatement();
             String sql = "Select owner from Chatgroup where name = '" + name +
             		"'";
-            System.out.println(sql);
             ResultSet rs = st.executeQuery(sql);
                        
             while(rs.next())
