@@ -238,12 +238,14 @@ public class OracleDatabase {
 	
 	public static void sendPM(User cUser, String recipient, String text){
 		if(checkFriend(cUser,recipient)){
+			
+			
             String sql = "INSERT INTO PrivateMessages (m_id, time, text, owner, recipient)" 
-		+ "VALUES (message_seq.nextval, CURRENT_TIMESTAMP, '" + text +"', '" + cUser.email + "', '" + recipient + "')" ;
+		+ "VALUES (message_seq.nextval," + (System.currentTimeMillis() + getTime()) + ", '" + text +"', '" + cUser.email + "', '" + recipient + "')" ;
 
             makeQuery(sql);
              sql = "INSERT INTO PrivateMessages (m_id, time, text, owner, recipient)" 
-            		+ "VALUES (message_seq.nextval, CURRENT_TIMESTAMP, '" + text +"', '" + recipient + "', '" + cUser.email + "')" ;
+            		+ "VALUES (message_seq.nextval," + (System.currentTimeMillis() + getTime()) + ", '" + text +"', '" + recipient + "', '" + cUser.email + "')" ;
              makeQuery(sql);
 
 		}
@@ -260,6 +262,8 @@ public class OracleDatabase {
             Connection con=DriverManager.getConnection(url,username, password);
             Statement st = con.createStatement();
             String sql = "Select * from InviteFriend where email1 = '" + user +"'";
+            
+            
             ResultSet rs = st.executeQuery(sql);
             
                        
@@ -312,7 +316,7 @@ public class OracleDatabase {
             ResultSet rs = st.executeQuery(sql);
                        
             while(rs.next())
-				System.out.println("Message: " + rs.getInt("m_id") +" " + rs.getTimestamp("time") + " " + rs.getString("owner") + rs.getString("text"));
+				System.out.println("Message: " + rs.getInt("m_id") + " " + rs.getString("owner") + rs.getString("text"));
             con.close();
             
             
@@ -390,7 +394,7 @@ public class OracleDatabase {
 
 	public static void createChatgroup(User user, String name, int duration){
 		String sql = "INSERT INTO Chatgroup " 
-        		+ "VALUES ('" + name + "'," + duration+ ", '" + user.email + "' , CURRENT_TIMESTAMP)";
+        		+ "VALUES ('" + name + "'," + duration+ ", '" + user.email + "' ," + (System.currentTimeMillis() + getTime()) + ")";
 		makeQuery(sql);
 		
 		sql = "Insert Into InviteChatgroup values (1, '" + user.email + "', '" + name + "')";
@@ -522,7 +526,7 @@ public class OracleDatabase {
 	}
 	
 	public static void sendChat(String user, String name, String text){
-		String sql = "Insert Into ChatgroupMessages Values (chat_message_seq.nextval,CURRENT_TIMESTAMP, '" +
+		String sql = "Insert Into ChatgroupMessages Values (chat_message_seq.nextval," + (System.currentTimeMillis() + getTime()) + ", '" +
 				 text +"', '" + user + "', '" + name + "')" ;
 		makeQuery(sql);
 	}
@@ -542,7 +546,7 @@ public class OracleDatabase {
             ResultSet rs = st.executeQuery(sql);
                        
             while(rs.next())
-            	System.out.println(rs.getInt("cm_id") + " " + rs.getTimestamp("time") + " " + rs.getString("owner") + ": " + rs.getString("text"));
+            	System.out.println(rs.getInt("cm_id") + " " + rs.getString("owner") + ": " + rs.getString("text"));
 				
 				
             con.close();
@@ -605,6 +609,41 @@ public class OracleDatabase {
 		String sql = "delete from ChatgroupMessages where owner = '" + email + "'and name = '" + currentChatgroup + "'and cm_id = " + parseInt;
 		makeQuery(sql);
 		
+	}
+
+	public static void setTime(long offset) {
+		String sql = "truncate table systemTime";
+		makeQuery(sql);
+		
+		 sql = "INSERT INTO systemTime " + "VALUES (" + offset + ")";
+		 System.out.println(sql);
+		 makeQuery(sql);
+		
+	}
+	public static long getTime(){
+		long offset = 0;
+		try{
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+            String username = "azakhor";
+            String password = "125";
+            Connection con=DriverManager.getConnection(url,username, password);
+            Statement st = con.createStatement();
+            String sql = "Select * from systemTime" ;
+            ResultSet rs = st.executeQuery(sql);
+                       
+            while(rs.next())
+				offset = rs.getLong("millis");
+				
+            con.close();
+            
+            
+		}catch(
+
+	Exception e)
+	{System.out.println(e);}
+		return offset;
 	}
 	
 

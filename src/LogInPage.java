@@ -1,4 +1,8 @@
 import java.awt.BorderLayout;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +18,7 @@ import javax.swing.JButton;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +26,7 @@ import java.util.List;
 public class LogInPage extends JFrame  {
 
 	private JPanel contentPane;
-	private JTextField textField, passwordField;
+	private JTextField textField, passwordField, dateField;
 	public User currentUser;
 
 	/**
@@ -45,7 +50,7 @@ public class LogInPage extends JFrame  {
 	 */
 	public LogInPage() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 400);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -64,12 +69,16 @@ public class LogInPage extends JFrame  {
 		passwordField.setBounds(117, 123, 134, 28);
 		contentPane.add(passwordField);
 		
+		dateField = new JTextField();
+		dateField.setBounds(11, 183, 134, 28);
+		contentPane.add(dateField);
+		
 		JLabel lblPassword = new JLabel("Password:");
 		lblPassword.setBounds(33, 129, 73, 16);
 		contentPane.add(lblPassword);
 		
 		JButton btnSignUp = new JButton("Sign Up");
-		btnSignUp.setBounds(33, 181, 117, 29);
+		btnSignUp.setBounds(33, 231, 117, 29);
 		contentPane.add(btnSignUp);
 		btnSignUp.addActionListener(new ActionListener()
 		{
@@ -83,12 +92,26 @@ public class LogInPage extends JFrame  {
 			});
 		
 		JButton btnLogIn = new JButton("Log In");
-		btnLogIn.setBounds(163, 181, 117, 29);
+		btnLogIn.setBounds(163, 321, 117, 29);
 		contentPane.add(btnLogIn);
 		btnLogIn.addActionListener(new ActionListener()
 		{
 			  public void actionPerformed(ActionEvent e)
 			  {
+				  if(!dateField.getText().equals("")){
+				  long offset;
+				  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+					try {
+						Date date = simpleDateFormat.parse(dateField.getText());
+						offset = date.getTime() - System.currentTimeMillis();
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						offset = 0;
+						e1.printStackTrace();
+					}
+					
+					OracleDatabase.setTime(offset);
+				  }
 				  User user = OracleDatabase.logInUser(textField.getText(), passwordField.getText());
 				  if(user!= null){
 					  
@@ -99,6 +122,7 @@ public class LogInPage extends JFrame  {
 				  }
 				  
 			  }
+			  
 			});
 		
 		JLabel lblMyCircle = new JLabel("My Circle");

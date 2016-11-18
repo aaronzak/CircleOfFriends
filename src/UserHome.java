@@ -17,6 +17,7 @@ public class UserHome extends JFrame {
 	private JPanel contentPane;
 	private JTextField addFriendTextField, topicTextField;
 	public User currentUser;
+	private Long offset;
 
 	/**
 	 * Launch the application.
@@ -48,6 +49,8 @@ public class UserHome extends JFrame {
 		setContentPane(contentPane);
 
 		String email = OracleDatabase.getSession();
+		offset = OracleDatabase.getTime();
+		
 		contentPane.setLayout(null);
 		JLabel lblCurrentuser = new JLabel(email);
 		lblCurrentuser.setBounds(168, 6, 61, 16);
