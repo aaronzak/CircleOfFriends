@@ -80,7 +80,7 @@ public class CircleDB {
 		
 		for (String topic : topics){
 			//if(checkTopicExists(topic)){
-				String sql = "Insert Into messageTopic Values ( " + id + ", '" + topic + "')"; 
+				String sql = "Insert Into messageTopic Values ( topic_message_seq.nextval," + id + ", '" + topic + "')"; 
 				System.out.println(sql);
 				makeQuery(sql);
 			//}

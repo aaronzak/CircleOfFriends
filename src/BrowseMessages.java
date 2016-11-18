@@ -1,5 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,7 +17,9 @@ public class BrowseMessages extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
-
+	private JTextArea txtrTopics;
+	private JCheckBox chckbxIncludeAll;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -35,7 +40,7 @@ public class BrowseMessages extends JFrame {
 	 * Create the frame.
 	 */
 	public BrowseMessages() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -48,18 +53,39 @@ public class BrowseMessages extends JFrame {
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
-		JTextArea txtrTopics = new JTextArea();
+		 txtrTopics = new JTextArea();
 		txtrTopics.setText("topics");
 		txtrTopics.setBounds(6, 91, 438, 75);
 		contentPane.add(txtrTopics);
 		
-		JCheckBox chckbxIncludeAll = new JCheckBox("Include all");
+		 chckbxIncludeAll = new JCheckBox("Include all");
 		chckbxIncludeAll.setBounds(316, 178, 128, 23);
 		contentPane.add(chckbxIncludeAll);
 		
 		JButton btnSearch = new JButton("Search");
 		btnSearch.setBounds(327, 222, 117, 29);
 		contentPane.add(btnSearch);
+		btnSearch.addActionListener(new ActionListener()
+		{
+			
+				
+			  public void actionPerformed(ActionEvent e)
+			  {
+				  ArrayList<String> topics = new ArrayList<String>();
+					
+					String delims = "[,]+";
+					
+
+					if(!txtrTopics.getText().equals("")){
+						String[] topicArray = txtrTopics.getText().split(delims);
+						for(int i = 0; i< topicArray.length; i++){
+							
+							topics.add(topicArray[i]);
+						}
+				 BrowseDB.searchMessages(topics, Integer.parseInt(textField.getText()),chckbxIncludeAll.isSelected() );
+					}
+			  }
+			});
 	}
 
 }

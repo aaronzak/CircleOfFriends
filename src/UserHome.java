@@ -167,7 +167,8 @@ public class UserHome extends JFrame {
 			  public void actionPerformed(ActionEvent e)
 			  {
 				  
-				  
+				  JFrame Browse =new BrowseMessages();
+				  Browse.setVisible(true);
 				  
 			  }
 			});
