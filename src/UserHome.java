@@ -159,7 +159,37 @@ public class UserHome extends JFrame {
 			  }
 			});
 		
+		JButton btnBrowseMessages = new JButton("Browse Messages");
+		btnBrowseMessages.setBounds(34, 375, 143, 29);
+		contentPane.add(btnBrowseMessages);
+		btnBrowseMessages.addActionListener(new ActionListener()
+		{
+			  public void actionPerformed(ActionEvent e)
+			  {
+				  
+				  
+				  
+			  }
+			});
+		
+		JButton btnManager = new JButton("Manager");
+		btnManager.setBounds(234, 375, 143, 29);
+		contentPane.add(btnManager);
+		btnManager.addActionListener(new ActionListener()
+		{
+			  public void actionPerformed(ActionEvent e)
+			  {
+				  
+				  
+				  
+			  }
+			});
+		
+		
 		currentUser = OracleDatabase.getUserFromEmail(email);
+		if(!currentUser.manager){
+			btnManager.setVisible(false);
+		}
 	}
 	
 	

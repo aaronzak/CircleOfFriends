@@ -5,6 +5,11 @@ public class OracleDatabase {
 	private static int m_id = 0;
 	private static int topic_id = 0;
 	
+	public static final long SECOND_IN_MILLIS = 1000;
+	public static final long MINUTE_IN_MILLIS = SECOND_IN_MILLIS * 60;
+	public static final long HOUR_IN_MILLIS = MINUTE_IN_MILLIS * 60;
+	public static final long DAY_IN_MILLIS = HOUR_IN_MILLIS * 24;
+	
 	public static void addUserToDatabase(User user) {
 
 		String is_manager = "'0'";
@@ -147,9 +152,8 @@ public class OracleDatabase {
             while(rs.next())
 				//MODIFY PRINT TO FIT YOUR QUERY AND ATTRIBUTE TYPES
             	if(true){
-            		boolean manager;
-            		if(rs.getString("is_manager").equals("0")) manager = false;
-            		else manager = true;
+            		boolean manager = false;
+            		if(rs.getString("is_manager").equals("1")) manager = true;
             		User user = new User(rs.getString("email"),rs.getString("name"),rs.getString("password"),rs.getString("phone_num"),rs.getString("screenname"),manager);
             		
             		return user;
@@ -316,7 +320,7 @@ public class OracleDatabase {
             ResultSet rs = st.executeQuery(sql);
                        
             while(rs.next())
-				System.out.println("Message: " + rs.getInt("m_id") + " " + rs.getString("owner") + rs.getString("text"));
+				System.out.println("Message: " + rs.getInt("m_id") + " " + new Timestamp(rs.getLong("time")) + " " + rs.getString("owner") + rs.getString("text"));
             con.close();
             
             
@@ -546,7 +550,7 @@ public class OracleDatabase {
             ResultSet rs = st.executeQuery(sql);
                        
             while(rs.next())
-            	System.out.println(rs.getInt("cm_id") + " " + rs.getString("owner") + ": " + rs.getString("text"));
+            	System.out.println(rs.getInt("cm_id") + " " + new Timestamp(rs.getLong("time")) + " " + rs.getString("owner") + ": " + rs.getString("text"));
 				
 				
             con.close();
@@ -645,6 +649,39 @@ public class OracleDatabase {
 	{System.out.println(e);}
 		return offset;
 	}
+
+	public static void cleanChatgroup(String currentChatgroup) {
+		int duration = 0;
+		try{
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+            String username = "azakhor";
+            String password = "125";
+            Connection con=DriverManager.getConnection(url,username, password);
+            Statement st = con.createStatement();
+            String sql = "Select * from Chatgroup where name = '" + currentChatgroup + "'" ;
+            ResultSet rs = st.executeQuery(sql);
+                       
+            while(rs.next())
+				duration = rs.getInt("duration");
+				
+            con.close();
+            
+            
+		}catch(
+
+	Exception e)
+	{System.out.println(e);}
+		if(duration == 0) return;
+		Long expiration = System.currentTimeMillis() + getTime() - duration*DAY_IN_MILLIS;
+		
+		String sql = "delete from ChatgroupMessages where name = '" + currentChatgroup + "' and time < " + expiration;
+		System.out.println(sql);
+		makeQuery(sql);
+	}
+	
+	
 	
 
 }

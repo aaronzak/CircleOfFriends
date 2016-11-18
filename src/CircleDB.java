@@ -64,7 +64,7 @@ public class CircleDB {
             String password = "125";
             Connection con=DriverManager.getConnection(url,username, password);
             Statement st = con.createStatement();
-            String sql = " INSERT INTO CircleMessage VALUES ( circle_message_seq.nextval, CURRENT_TIMESTAMP, '" +
+            String sql = " INSERT INTO CircleMessage VALUES ( circle_message_seq.nextval, " + (System.currentTimeMillis() + OracleDatabase.getTime()) + ", '" +
 					text + "', '" + user + "', " + ispublic + ")  ";
             
           
@@ -222,7 +222,7 @@ public class CircleDB {
             String sql = "Select * From CircleMessage where c_id = " + id + "";
             ResultSet rs = st.executeQuery(sql);
             while(rs.next()) 
-            	System.out.println(rs.getInt("c_id") + " " + rs.getTimestamp("time") + " " +rs.getString("owner")
+            	System.out.println(rs.getInt("c_id") + " " + new Timestamp(rs.getLong("time")) + " " +rs.getString("owner")
             			+ ": " + rs.getString("text"));
             System.out.println(sql);
             con.close();

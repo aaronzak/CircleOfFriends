@@ -94,8 +94,10 @@ public class ChatGroup extends JFrame {
 			  {
 				 if(OracleDatabase.checkUserInChatgroup(currentUser.email, txtOpenChatgroupname.getText())){
 					 currentChatgroup = txtOpenChatgroupname.getText();
+					 OracleDatabase.cleanChatgroup(currentChatgroup);
 					 lblCurrentChat.setText(currentChatgroup);
 					 OracleDatabase.viewChatgroupConversations(currentChatgroup);
+					 
 				 }
 			  }
 			});
