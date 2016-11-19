@@ -82,6 +82,7 @@ public class BrowseMessages extends JFrame {
 		contentPane.add(lblUsers);
 		
 		emailSearch = new JTextField();
+		emailSearch.setText("");
 		emailSearch.setBounds(6, 298, 438, 28);
 		contentPane.add(emailSearch);
 		emailSearch.setColumns(10);
@@ -93,7 +94,7 @@ public class BrowseMessages extends JFrame {
 		txtTopicsearc.setColumns(10);
 		
 		textField_1 = new JTextField();
-		textField_1.setText("7");
+		textField_1.setText("");
 		textField_1.setBounds(6, 389, 134, 28);
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);
@@ -115,6 +116,34 @@ public class BrowseMessages extends JFrame {
 		btnSearchusers = new JButton("Search Users");
 		btnSearchusers.setBounds(294, 493, 150, 29);
 		contentPane.add(btnSearchusers);
+		btnSearchusers.addActionListener(new ActionListener()
+		{
+			
+			
+			  public void actionPerformed(ActionEvent e)
+			  {
+				  if(!emailSearch.getText().equals("")){
+					  BrowseDB.searchUserEmail(emailSearch.getText());
+				  }
+				  else if(!txtTopicsearc.getText().equals("")){
+					  ArrayList<String> topics = new ArrayList<String>();
+						
+						String delims = "[,]+";
+						String[] topicArray = txtTopicsearc.getText().split(delims);
+						for(int i = 0; i< topicArray.length; i++){
+							topics.add(topicArray[i]);
+						}
+					  BrowseDB.searchUserTopic(topics);
+				  }
+				  else if(!textField_1.getText().equals("")){
+					  BrowseDB.searchUserRecent(Integer.parseInt(textField_1.getText()));
+				  }
+				  else if(!txtTotal.getText().equals("")){
+					  BrowseDB.searchUserTotal(Integer.parseInt(txtTotal.getText()));
+				  }
+				  
+			  }
+			});
 		
 		lblEmail = new JLabel("email");
 		lblEmail.setBounds(6, 281, 61, 16);

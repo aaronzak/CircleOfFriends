@@ -164,7 +164,8 @@ public class OracleDatabase {
 		}catch(
 
 	Exception e)
-	{System.out.println(e);}return null;
+	{System.out.println(e);}
+		return null;
 		
 		
 	
@@ -320,7 +321,7 @@ public class OracleDatabase {
             ResultSet rs = st.executeQuery(sql);
                        
             while(rs.next())
-				System.out.println("Message: " + rs.getInt("m_id") + " " + new Timestamp(rs.getLong("time")) + " " + rs.getString("owner") + rs.getString("text"));
+				System.out.println("Message: " + rs.getInt("m_id") + " " + new Timestamp(rs.getLong("time")) + " " + rs.getString("owner") + ": "+ rs.getString("text"));
             con.close();
             
             
