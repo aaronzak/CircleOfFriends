@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.ArrayList;
 
 public class OracleDatabase {
 
@@ -522,6 +523,33 @@ public class OracleDatabase {
 		return false;
 		
 		
+	}
+	
+	public static int getChatgroupSize(String name){
+		int count = 0;
+		try{
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+            String username = "azakhor";
+            String password = "125";
+            Connection con=DriverManager.getConnection(url,username, password);
+            Statement st = con.createStatement();
+            String sql = "Select count(*) from InviteChatgroup where   name = '" + name + "'";
+            ResultSet rs = st.executeQuery(sql);
+                       
+            while(rs.next())
+            	count = rs.getInt(1);
+				
+				
+            con.close();
+            
+            
+		}catch(
+
+	Exception e)
+	{System.out.println(e);}
+		return count;
 	}
 	
 	public static void acceptChatgroup(String user, String name)

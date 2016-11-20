@@ -105,7 +105,7 @@ public class CircleDB {
 		
 	}
 	
-	private static ArrayList<String> getAllFriends(String user) {
+	public static ArrayList<String> getAllFriends(String user) {
 		ArrayList<String> allFriends = new ArrayList<String>();
 		try{
 
@@ -159,6 +159,8 @@ public class CircleDB {
 	{System.out.println(e);}
 		return allFriends;
 	}
+	
+	
 
 
 	private static boolean checkTopicExists(String topic) {

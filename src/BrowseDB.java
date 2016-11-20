@@ -4,6 +4,11 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
+
 
 public class BrowseDB {
 	
@@ -288,6 +293,18 @@ public class BrowseDB {
 		else return false;
 		
 	}
+	
+	public static void searchInactiveUsers(){
+		ArrayList<String> users = getAllUsers();
+		ArrayList<String> activeUsers = new ArrayList<String>();
+		System.out.println("Users with less than three messages: ");
+		for(String user : users){
+			if(!searchUserTotal(4, user)){
+				activeUsers.add(user);
+				System.out.println(user);
+			}
+		}
+	}
 
 	public static void searchUserTotal(int parseInt) {
 		ArrayList<String> users = searchUserRecent(7);
@@ -299,6 +316,328 @@ public class BrowseDB {
 				System.out.println(user);
 			}
 		}
+		
+	}
+
+	public static void getTop3ActiveUsers() {
+		HashMap<String, Integer> map = getMapUserMessageCount();
+		TreeMap<String, Integer> sortedMap = MapComparator.sortMapByValue(map);  
+		Iterator it =  sortedMap.entrySet().iterator();
+		int i = 0;
+		while(it.hasNext() && i <3){
+			Map.Entry user = (Map.Entry)it.next();
+			System.out.println(user.getKey() + ": " + user.getValue());
+			i++;
+		}
+		
+		
+		
+	}
+	
+
+	
+	
+	public static HashMap<String,Integer> getMapUserMessageCount(){
+		ArrayList<String> users = searchUserRecent(7);
+		HashMap<String, Integer> map = new HashMap<String,Integer>();
+		
+		for(String email: users){
+			Long expiration = System.currentTimeMillis() + OracleDatabase.getTime() - 7*DAY_IN_MILLIS;
+			int count = 0;
+			try{
+
+	            Class.forName("oracle.jdbc.driver.OracleDriver");
+	            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+	            String username = "azakhor";
+	            String password = "125";
+	            Connection con=DriverManager.getConnection(url,username, password);
+	            Statement st = con.createStatement();
+	            String sql = "Select  COUNT(m_id) from (select * from PrivateMessages P where P.time > " + expiration+
+	            		" and MOD(P.m_id,2) = 0 and owner = '" + email+ "') ";
+	            		
+	            		
+	            ResultSet rs = st.executeQuery(sql);
+	 
+	            while(rs.next()){
+	            	count += rs.getInt(1);
+					
+	            }
+	            	
+	            con.close();
+	            
+	            
+			}catch(
+
+		Exception e)
+		{System.out.println(e);}
+			try{
+
+	            Class.forName("oracle.jdbc.driver.OracleDriver");
+	            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+	            String username = "azakhor";
+	            String password = "125";
+	            Connection con=DriverManager.getConnection(url,username, password);
+	            Statement st = con.createStatement();
+	            String sql = "Select  COUNT(cm_id) from (select * from ChatgroupMessages C where C.time > " + expiration+
+	            		"  and C.owner = '" + email+ "') ";
+	            		
+	            		
+	            ResultSet rs = st.executeQuery(sql);
+	 
+	            while(rs.next()){
+	            	count += rs.getInt(1);
+					
+	            }
+	            	
+	            con.close();
+	            
+	            
+			}catch(
+
+		Exception e)
+		{System.out.println(e);}
+			
+			try{
+
+	            Class.forName("oracle.jdbc.driver.OracleDriver");
+	            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+	            String username = "azakhor";
+	            String password = "125";
+	            Connection con=DriverManager.getConnection(url,username, password);
+	            Statement st = con.createStatement();
+	            String sql = "Select  COUNT(c_id) from (select * from CircleMessage M where M.time > " + expiration+
+	            		" and M.owner = '" + email+ "') ";
+	            		
+	            		
+	            ResultSet rs = st.executeQuery(sql);
+	 
+	            while(rs.next()){
+	            	count += rs.getInt(1);
+					
+	            }
+	            	
+	            con.close();
+	            
+	            
+			}catch(
+
+		Exception e)
+		{System.out.println(e);}
+			
+			map.put(email, count);
+		}
+		return map;
+		
+	}
+	
+	public static ArrayList<String> getAllUsers(){
+		ArrayList<String> allUsers = new ArrayList<String>();
+		try{
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+            String username = "azakhor";
+            String password = "125";
+            Connection con=DriverManager.getConnection(url,username, password);
+            Statement st = con.createStatement();
+            String sql = "Select email from Users ";
+            System.out.println(sql);
+            ResultSet rs = st.executeQuery(sql);
+            
+                       
+            while(rs.next()){
+                	allUsers.add(rs.getString("email"));
+                	System.out.println(rs.getString("email"));
+            }
+                
+            con.close();
+            
+            
+		}catch(
+
+	Exception e)
+	{System.out.println(e);}
+		return allUsers;
+	}
+	
+	public static int totalMessages(){
+		Long expiration = System.currentTimeMillis() + OracleDatabase.getTime() - 7*DAY_IN_MILLIS;
+		int count = 0;
+		try{
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+            String username = "azakhor";
+            String password = "125";
+            Connection con=DriverManager.getConnection(url,username, password);
+            Statement st = con.createStatement();
+            String sql = "Select  COUNT(m_id) from (select * from PrivateMessages P where P.time > " + expiration+
+            		" and MOD(P.m_id,2) = 0) ";
+            		
+            		
+            ResultSet rs = st.executeQuery(sql);
+ 
+            while(rs.next()){
+            	count += rs.getInt(1);
+				
+            }
+            	
+            con.close();
+            
+            
+		}catch(
+
+	Exception e)
+	{System.out.println(e);}
+		try{
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+            String username = "azakhor";
+            String password = "125";
+            Connection con=DriverManager.getConnection(url,username, password);
+            Statement st = con.createStatement();
+            String sql = "Select  COUNT(cm_id) from (select * from ChatgroupMessages C where C.time > " + expiration+
+            		" ) ";
+            		
+            		
+            ResultSet rs = st.executeQuery(sql);
+ 
+            while(rs.next()){
+            	count += rs.getInt(1);
+				
+            }
+            	
+            con.close();
+            
+            
+		}catch(
+
+	Exception e)
+	{System.out.println(e);}
+		
+		try{
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+            String username = "azakhor";
+            String password = "125";
+            Connection con=DriverManager.getConnection(url,username, password);
+            Statement st = con.createStatement();
+            String sql = "Select  COUNT(c_id) from (select * from CircleMessage M where M.time > " + expiration+
+            		") ";
+            		
+            		
+            ResultSet rs = st.executeQuery(sql);
+ 
+            while(rs.next()){
+            	count += rs.getInt(1);
+				
+            }
+            	
+            con.close();
+            
+            
+		}catch(
+
+	Exception e)
+	{System.out.println(e);}
+		return count;
+		
+		
+	}
+
+	public static int totalReads() {
+		Long expiration = System.currentTimeMillis() + OracleDatabase.getTime() - 7*DAY_IN_MILLIS;
+		int count = 0;
+		try{
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+            String username = "azakhor";
+            String password = "125";
+            Connection con=DriverManager.getConnection(url,username, password);
+            Statement st = con.createStatement();
+            String sql = "Select  COUNT(m_id) from (select * from PrivateMessages P where P.time > " + expiration+
+            		" and MOD(P.m_id,2) = 0) ";
+            		
+            		
+            ResultSet rs = st.executeQuery(sql);
+ 
+            while(rs.next()){
+            	count += (rs.getInt(1)*2);
+				
+            }
+            	
+            con.close();
+            
+            
+		}catch(
+
+	Exception e)
+	{System.out.println(e);}
+		try{
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+            String username = "azakhor";
+            String password = "125";
+            Connection con=DriverManager.getConnection(url,username, password);
+            Statement st = con.createStatement();
+            String sql = "select name from ChatgroupMessages C where C.time > " + expiration+
+            		"  ";
+            		
+            		
+            ResultSet rs = st.executeQuery(sql);
+ 
+            System.out.println("hello");
+            
+            while(rs.next()){
+            	count += (OracleDatabase.getChatgroupSize(rs.getString(1)));
+            	System.out.println(rs.getString(1));
+            	//count += rs.getInt(1);
+				
+            }
+            	
+            con.close();
+            
+            
+		}catch(
+
+	Exception e)
+	{System.out.println(e);}
+		
+		try{
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String url = "jdbc:oracle:thin:@uml.cs.ucsb.edu:1521:xe";
+            String username = "azakhor";
+            String password = "125";
+            Connection con=DriverManager.getConnection(url,username, password);
+            Statement st = con.createStatement();
+            String sql = "select owner from CircleMessage M where M.time > " + expiration+
+            		" ";
+            		
+            		
+            ResultSet rs = st.executeQuery(sql);
+ 
+            while(rs.next()){
+            	count += (CircleDB.getAllFriends(rs.getString(1)).size() +1);
+				
+            }
+            	
+            con.close();
+            
+            
+		}catch(
+
+	Exception e)
+	{System.out.println(e);}
+		return count;
+	}
+
+	public static void getMostRecentMessageTopic() {
+		
 		
 	}
 

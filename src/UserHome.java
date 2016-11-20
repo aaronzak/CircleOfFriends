@@ -180,7 +180,8 @@ public class UserHome extends JFrame {
 		{
 			  public void actionPerformed(ActionEvent e)
 			  {
-				  
+				  JFrame Manager =new Manager();
+				  Manager.setVisible(true);
 				  
 				  
 			  }
